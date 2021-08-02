@@ -5,7 +5,7 @@ A tiny conversion tool
 
 A small tool to convert given directory contents using an external tool, and then save the converted files to a new given directory tree respecting the same hierarchy of the original structure. 
 
-The code will call an external command to conduct for the conversion. 
+The code will call an external command to conduct the conversion. 
 
 This program is written in ANSI C11.
 
