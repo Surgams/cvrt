@@ -18,17 +18,17 @@ OUTPUT=$(PROJECT_B)
 
 all: build 
 
-build: depend $(PROJECT_O) $(PROJECT_B) 
+build: depend PROJECT_O PROJECT_B 
 
 debug:
 		$(MK)
 		$(CC)  -c $(SOURCES) $(CFLAGS_DEBUG)
 		$(CC) -o $(OUTPUT_DIR)/$(PROJECT_B) $(OBJECTS) $(LIBS)
 
-$(PROJECT_O):
+PROJECT_O:
 		$(CC) -c $(SOURCES) $(CFLAGS)  
 
-$(PROJECT_B):
+PROJECT_B:
 		$(MK)
 		$(CC) -o $(OUTPUT_DIR)/$(PROJECT_B) $(OBJECTS) $(LIBS)
 
