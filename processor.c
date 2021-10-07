@@ -52,6 +52,8 @@ static void trim_l (char *str) {
 void initialise_options (Options *options) {
     options->isfilter = false;
     memset (options->filter_types, '\0', FILTER_LEN);
+    options->iscopy = false;
+    memset (options->copy_types, '\0', FILTER_LEN);
     memset (options->base_dir, '\0', MAX_PATH_LEN);
     memset (options->dest_dir, '\0', MAX_PATH_LEN);
     memset (options->conf_file, '\0', MAX_PATH_LEN);
@@ -68,6 +70,7 @@ uint8_t process(int argc, char **argv, Options *options) {
 
     /* config file handler */
     ini_t *config = NULL;
+
     char *file_types = NULL, *cmd = NULL, *base_dir = NULL, *dest_dir = NULL, *cvrt_type = NULL;
 
     if ((config = ini_load(config_file)) == NULL){
@@ -85,6 +88,18 @@ uint8_t process(int argc, char **argv, Options *options) {
         }
         strncpy(options->filter_types, file_types, FILTER_LEN - 1);
         options->filter_types[FILTER_LEN - 1] = '\0';
+
+        /* copy other files settings */
+        if (strcmp(ini_get(config, "copy", "enabled"), "true") == 0) {  
+            options->iscopy = true;
+            if ((file_types = (char *)ini_get(config, "copy", "file_types")) == NULL) 
+                strcpy(options->copy_types, "*");
+            else {
+                strncpy(options->copy_types, file_types, FILTER_LEN - 1);
+            }
+        } else {
+            options->iscopy = false;
+        }
     }
 
     base_dir = (char *)ini_get(config, "core", "base_dir");

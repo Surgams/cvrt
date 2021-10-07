@@ -39,7 +39,35 @@ inline static void display_help() {
             "\n\t[-b --base]\t<BASE_FOLDER>" \
             "\n\t[-d --dest]\t<DESTINATION_FOLDER>" \
             "\n\t[-f --conf]\t<CONF_FILE>" \
-            "\n\t[-h --help]\n");
+            "\n\t[-h --help]\n" \
+            "\nDefault location:~/.config/cvrt/config.ini\n" \
+            "\nSample config.ini" \
+            "\n------------------" \
+            "\n\t[filter]" \
+            "\n\t; enable filtering by file type, if not enabled" \
+            "\n\t; then all the files will be converted using the" \
+            "\n\t; external command" \
+            "\n\tenabled = true" \
+            "\n\t; set the required file types, if filter is enabled" \
+            "\n\t; then this field is mandatory" \
+            "\n\tfile_types = .wav .flac" \
+            "\n\t[copy]" \
+            "\n\t; if filter is enabled, then other files types" \
+            "\n\t; will be copied to the new location" \
+            "\n\tenabled = true" \
+            "\n\t; if copy is enabled, will copy the file types below" \
+            "\n\t; * or blank for all files other than" \
+            "\n\t; the above filtered ones" \
+            "\n\tfile_types =" \
+            "\n" \
+            "\n\t[core]" \
+            "\n\t; external command to execute, ? will be replaced by variables" \
+            "\n\tbase_dir = Music" \
+            "\n\tdest_dir = Music2" \
+            "\n\tcvrt_type = opus" \
+            "\n\t; External command to execute, expecting 2 '?'" \
+            "\n\t; '?'s are place-holders for input and output files." \
+            "\n\tcmd = ffmpeg -i ? -c:a libopus ?\n\n"); 
 }
 
 

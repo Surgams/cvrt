@@ -12,6 +12,8 @@
 typedef struct Options_ {
     bool isfilter;
     char filter_types[FILTER_LEN];
+    bool iscopy;
+    char copy_types[FILTER_LEN];
     char base_dir[MAX_PATH_LEN];
     char dest_dir[MAX_PATH_LEN];
     char conf_file[MAX_PATH_LEN];

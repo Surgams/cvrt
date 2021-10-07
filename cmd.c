@@ -37,10 +37,10 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "cmd.h"
+#include "filemgm.h"
 
 #define DELIMETER " "
 #define CMD_ARG 200
@@ -48,11 +48,10 @@
 char **ftypes;
 
 
-static inline int cmd_arg_split (char *cmd, char **cmd_array, const char *delimiter) {
+static int cmd_arg_split (char *cmd, char **cmd_array, const char *delimiter) {
     char *token;
     int counter = 0;
 
-    printf("--cmd: %s\n", cmd);
     while ((token = strsep(&cmd, delimiter)) != NULL) {
         bool isempty = true;
         while (*token != '\0') {
@@ -67,37 +66,10 @@ static inline int cmd_arg_split (char *cmd, char **cmd_array, const char *delimi
         cmd_array[counter] = (char *) malloc((strlen(token) + 1) * sizeof(char));
         sprintf(cmd_array[counter], "%s", token);
 
-        printf("--token: [%s]\tcmdarray: [%s]\tcounter [%d]\n", token, cmd_array[counter], counter);
-
         if (counter++ >= CMD_ARG - 1)
             return 1;
     }
     cmd_array[counter] = NULL;
-    return 0;
-}
-
-static bool check_filter (char *filetypes, const char *delimiter, char *extension) {
-    static bool isprocessed = false;
-
-    if(!isprocessed) {
-        ftypes = malloc(FTYPES_SIZE * sizeof(char));
-        if (cmd_arg_split(filetypes, ftypes, delimiter)) 
-            return false;
-        isprocessed = true;
-    }
-    for (int i = 0; ftypes[i] != NULL && i < FTYPES_SIZE; i++) {
-        if (strcasecmp(extension, ftypes[i]) == 0)
-            return true;
-    }
-    return false;
-}
-
-int create_dir (char *path) {
-    struct stat st = {0};
-
-    if (stat(path, &st) == - 1) {
-        return mkdir(path, 0700);
-    }
     return 0;
 }
 
@@ -119,14 +91,21 @@ void convert_files_recursively (Options options) {
         fprintf(stderr, "Error number %d: %s\n", errno, strerror(errno));
         return;
     }
+
     while ((dp = readdir(dir)) != NULL) {
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
             if ((point = strrchr(dp->d_name,'.')) != NULL) {
-                if (check_filter(options.filter_types, DELIMETER, point)) {
 
-                    /* Preparing input and output file */
+                if (strstr(options.filter_types, point) != NULL) {
+
+                    /* Preparing input and output files */
                     char  i_tmp[MAX_PATH_LEN] = {}, o_tmp[MAX_PATH_LEN] = {};
-                    snprintf(o_tmp, sizeof(o_tmp) - 1, "%s/%.*s.opus", dest_path, (int)(strlen(dp->d_name) - strlen(point)), dp->d_name);
+                    
+                    /* output temp file format string */
+                    char format[20] = "%s/%.*s";
+                    strcat(format, options.cvrt_type);
+
+                    snprintf(o_tmp, sizeof(o_tmp) - 1, format, dest_path, (int)(strlen(dp->d_name) - strlen(point)), dp->d_name);
                     snprintf(i_tmp, sizeof(i_tmp) - 1, "%s/%s", base_path, dp->d_name);
 
                     char *fullcmd = strdup(options.full_cmd);
@@ -166,6 +145,16 @@ void convert_files_recursively (Options options) {
                             fullcmd = NULL;
                         }
                     }
+                } else if (options.iscopy) {
+                    if ((strcmp(options.copy_types, "*") == 0) || (strstr(options.copy_types, point) != NULL)) {
+
+                        /* Preparing source and destination files */
+                        char  src_tmp[MAX_PATH_LEN] = {}, dest_tmp[MAX_PATH_LEN] = {};
+
+                        snprintf(dest_tmp, sizeof(dest_tmp) - 1, "%s/%s", dest_path, dp->d_name);
+                        snprintf(src_tmp, sizeof(src_tmp) - 1, "%s/%s", base_path, dp->d_name);
+                        copy_file (src_tmp, dest_tmp);
+                    }
                 }
             }
 
@@ -183,6 +172,8 @@ void convert_files_recursively (Options options) {
             strcpy(tmp_options.full_cmd, options.full_cmd);
             strcpy(tmp_options.cvrt_type, options.cvrt_type);
             strcpy(tmp_options.filter_types, options.filter_types);
+            tmp_options.iscopy = options.iscopy;
+            strcpy(tmp_options.copy_types, options.copy_types);
             convert_files_recursively(tmp_options);
         }
     }

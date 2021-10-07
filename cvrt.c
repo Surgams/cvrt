@@ -28,8 +28,8 @@
 
 /*
    ==========================================================================
-    A small tool to convert given directory contents using an external tool,
-    and then save the converted files to a new given directory tree respecting the same hierarchy of the original structure. 
+    A small tool to convert given directory contents using any external tool,
+    and then to save the converted files to a new given directory tree respecting the same hierarchy of the original structure. 
     The code will call an external command to conduct for the conversion. 
     The code is written in ANSI C11
 
@@ -43,6 +43,21 @@
 #include "cvrt.h"
 #include "processor.h"
 #include "cmd.h"
+#include "filemgm.h"
+
+void static display_options (Options options) {
+    printf("\nYou've chosen the below options:\n\n");
+    if (options.isfilter) {
+        printf("\tConvert files of types %s \n", options.filter_types);
+        if (options.iscopy)
+            printf("\tand copy file types %s \n", options.copy_types);
+    } else  
+        printf ("\tConvert all files\n");
+    printf("\tin directory %s to type %s in directory %s\n", options.base_dir, options.cvrt_type ,options.dest_dir);
+    printf("\tUsing %s\n\n", options.full_cmd);
+    printf("Are you sure you want to proceed [Y/n]:");
+}
+
 
 int main(int argc, char * const argv[]) {
  
@@ -58,6 +73,11 @@ int main(int argc, char * const argv[]) {
 
     initialise_options(options);
     if (process(argc, (char **)argv, options))
+        return 0;
+
+    display_options(*options);
+    int proceed = getchar();
+    if (proceed != 'y' && proceed != 'Y')
         return 0;
 
     convert_files_recursively(*options);

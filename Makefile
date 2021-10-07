@@ -8,8 +8,8 @@ MK=mkdir -p $(OUTPUT_DIR)
 PROJECT_O=cvrt.o
 PROJECT_B=cvrt
 OUTPUT_DIR=bin
-OBJECTS=cvrt.o ini.o processor.o options.o cmd.o 
-SOURCES=cvrt.c ini.c processor.c options.c cmd.c
+OBJECTS=cvrt.o ini.o processor.o options.o cmd.o filemgm.o
+SOURCES=cvrt.c ini.c processor.c options.c cmd.c filemgm.c
 
 VERSION=0.0.0
 OUTPUT=$(PROJECT_B)
@@ -30,8 +30,7 @@ $(PROJECT_O):
 
 $(PROJECT_B):
 		$(MK)
-		$(CC) -o $(OUTPUT_DIR)/$(PROJECT_B) $(OBJECTS) $(LIBS) 
-
+		$(CC) -o $(OUTPUT_DIR)/$(PROJECT_B) $(OBJECTS) $(LIBS)
 
 
 clean:
