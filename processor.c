@@ -66,7 +66,10 @@ uint8_t process(int argc, char **argv, Options *options) {
     if (get_options(argc, argv, options))
         return 1;
 
-    char *config_file = strlen(options->conf_file) == 0 ? DEFAULT_CONFIG : options->conf_file;
+    char default_config[FILTER_LEN]= {'\0'};
+    snprintf(default_config, FILTER_LEN -1, "%s/.config/cvrt/config.ini", getenv("HOME"));
+   
+    char *config_file = strlen(options->conf_file) == 0 ? default_config : options->conf_file;
 
     /* config file handler */
     ini_t *config = NULL;
@@ -76,6 +79,7 @@ uint8_t process(int argc, char **argv, Options *options) {
     if ((config = ini_load(config_file)) == NULL){
         /* create the folder first */
         fprintf(stderr, "Error: configuration file %s is missing\n", config_file);
+        display_help();
         return 1;
     } 
 

@@ -5,7 +5,7 @@
 #include "cvrt.h"
 
 uint8_t get_options (int argc, char **argv, Options *options);
-
+void display_help();
 
 
 

@@ -34,7 +34,7 @@
 #include "options.h"
 
 
-inline static void display_help() {
+void display_help() {
     printf("Usage: bserver options" \
             "\n\t[-b --base]\t<BASE_FOLDER>" \
             "\n\t[-d --dest]\t<DESTINATION_FOLDER>" \

@@ -64,6 +64,7 @@ int main(int argc, char * const argv[]) {
     /* Create configuration folder */
     char config_path[FILTER_LEN] = {'\0'};
     snprintf(config_path, FILTER_LEN -1, "%s/.config/cvrt", getenv("HOME"));
+    
     if (create_dir (config_path) == -1) {
         fprintf(stderr, "[fun: %s - %s:%d] Error: unable to create config folder: (%s)\n", __func__, __FILE__, __LINE__, strerror(errno));
         return 1;

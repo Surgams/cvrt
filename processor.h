@@ -2,6 +2,7 @@
 #define PROCESS_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "cvrt.h"
 
 void initialise_options (Options *options);

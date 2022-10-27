@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include "ini.h"
 
@@ -189,7 +190,8 @@ ini_t* ini_load(const char *filename) {
   /* Open file */
   fp = fopen(filename, "rb");
   if (!fp) {
-    goto fail;
+      fprintf(stderr, "Error number %d: [%s] %s\n", errno, filename, strerror(errno));
+      goto fail;
   }
 
   /* Get file size */
