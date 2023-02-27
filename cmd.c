@@ -24,7 +24,7 @@
    OTHER DEALINGS IN THE SOFTWARE.
 
    For more information, please refer to <http://unlicense.org/>
-   */
+*/
 
 #define _DEFAULT_SOURCE
 
@@ -84,6 +84,7 @@ void convert_files_recursively (Options options) {
     
     DIR *dir = opendir(base_path);
     if (!dir) {
+        fprintf(stderr, "Error number %d: %s: %s\n", errno, strerror(errno), base_path);
         return;
     }
 

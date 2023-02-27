@@ -26,6 +26,7 @@ usage: bserver options
 	[-d --dest]	<DESTINATION_FOLDER>
 	[-f --conf]	<CONF_FILE>
 	[-h --help]
+	[-v --version]
 ```
 
 **Default configuration file `~/.config/cvrt/config.ini`**

@@ -8,8 +8,8 @@ MK=mkdir -p $(OUTPUT_DIR)
 PROJECT_O=cvrt.o
 PROJECT_B=cvrt
 OUTPUT_DIR=bin
-OBJECTS=cvrt.o ini.o processor.o options.o cmd.o filemgm.o
-SOURCES=cvrt.c ini.c processor.c options.c cmd.c filemgm.c
+OBJECTS=cvrt.o ini.o processor.o options.o cmd.o filemgm.o versdts.o
+SOURCES=cvrt.c ini.c processor.c options.c cmd.c filemgm.c versdts.c
 
 VERSION=0.0.0
 OUTPUT=$(PROJECT_B)

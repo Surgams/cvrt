@@ -32,6 +32,7 @@
 #include <string.h>
 #include <strings.h>
 #include "options.h"
+#include "versdts.h"
 
 
 void display_help() {
@@ -40,6 +41,7 @@ void display_help() {
             "\n\t[-d --dest]\t<DESTINATION_FOLDER>" \
             "\n\t[-f --conf]\t<CONF_FILE>" \
             "\n\t[-h --help]\n" \
+            "\n\t[-v --version]\n" \
             "\nDefault location:~/.config/cvrt/config.ini\n" \
             "\nSample config.ini" \
             "\n------------------" \
@@ -81,13 +83,14 @@ uint8_t get_options (int argc, char **argv, Options *options) {
             {"dest",   required_argument, 0,'d'},
             {"conf",   required_argument, 0,'f'},
             {"help",   no_argument,       0, 'h'},
+            {"version", no_argument,      0, 'v'},
             {0,        0,                 0, 0}
         };
 
         /* getopt_long stores the option index here. */
         int option_index = 0;
 
-        choice = getopt_long (argc, argv, "hb:d:f:", long_options, 
+        choice = getopt_long (argc, argv, "vhb:d:f:", long_options, 
                 &option_index);
 
         size_t optarg_len = 0;
@@ -142,6 +145,10 @@ uint8_t get_options (int argc, char **argv, Options *options) {
                 break;
             case 'h':
                 display_help();
+                return 1;
+            case 'v':
+                display_system_details(); 
+                display_current_version();
                 return 1;
             case '?':
                 /* getopt_long already printed an error message. */
