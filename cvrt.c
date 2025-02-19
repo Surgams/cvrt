@@ -45,7 +45,7 @@
 #include "cmd.h"
 #include "filemgm.h"
 
-void static display_options (Options options) {
+static void display_options (Options options) {
     printf("\nYou've chosen the below options:\n\n");
     if (options.isfilter) {
         printf("\tConvert files of types %s \n", options.filter_types);

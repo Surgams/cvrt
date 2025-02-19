@@ -110,7 +110,7 @@ uint8_t get_options (int argc, char **argv, Options *options) {
             case 'b':
                 optarg_len = strlen(optarg);
                 if(optarg_len <= MAX_PATH_LEN - 1) {
-                    strncpy(options->base_dir, optarg, optarg_len);
+                    strcpy(options->base_dir, optarg);
                     options->base_dir[optarg_len] = '\0';
                     if (options->base_dir[optarg_len -1] == '/')
                         options->base_dir[optarg_len-1] ='\0';
@@ -122,7 +122,7 @@ uint8_t get_options (int argc, char **argv, Options *options) {
             case 'd':
                 optarg_len = strlen(optarg);
                 if(optarg_len <= MAX_PATH_LEN - 1) {
-                    strncpy(options->dest_dir, optarg, optarg_len);
+                    strcpy(options->dest_dir, optarg);
                     options->dest_dir[optarg_len] = '\0';
                     if (options->dest_dir[optarg_len -1] == '/')
                         options->dest_dir[optarg_len-1] ='\0';
@@ -134,7 +134,7 @@ uint8_t get_options (int argc, char **argv, Options *options) {
             case 'f':
                 optarg_len = strlen(optarg);
                 if(optarg_len <= MAX_PATH_LEN - 1) {
-                    strncpy(options->conf_file, optarg, optarg_len);
+                    strcpy(options->conf_file, optarg);
                     options->conf_file[optarg_len] = '\0';
                     if (options->conf_file[optarg_len -1] == '/')
                         options->conf_file[optarg_len-1] ='\0';

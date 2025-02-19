@@ -45,8 +45,8 @@
 #define DELIMETER " "
 #define CMD_ARG 200
 #define FTYPES_SIZE 31
+#define EXT_MAX_PATH 1760
 char **ftypes;
-
 
 static int cmd_arg_split (char *cmd, char **cmd_array, const char *delimiter) {
     char *token;
@@ -78,7 +78,7 @@ void convert_files_recursively (Options options) {
     char *dest_path = options.dest_dir;
 
     int output, pid;
-    char path[MAX_PATH_LEN], new_path[MAX_PATH_LEN];
+    char path[EXT_MAX_PATH], new_path[EXT_MAX_PATH];
     struct dirent *dp;
     char *point;
     
@@ -100,7 +100,7 @@ void convert_files_recursively (Options options) {
                 if (strstr(options.filter_types, point) != NULL) {
 
                     /* Preparing input and output files */
-                    char  i_tmp[MAX_PATH_LEN] = {}, o_tmp[MAX_PATH_LEN] = {};
+                    char  i_tmp[EXT_MAX_PATH] = {}, o_tmp[MAX_PATH_LEN] = {};
                     
                     /* output temp file format string */
                     char format[20] = "%s/%.*s";
@@ -150,7 +150,7 @@ void convert_files_recursively (Options options) {
                     if ((strcmp(options.copy_types, "*") == 0) || (strstr(options.copy_types, point) != NULL)) {
 
                         /* Preparing source and destination files */
-                        char  src_tmp[MAX_PATH_LEN] = {}, dest_tmp[MAX_PATH_LEN] = {};
+                        char  src_tmp[EXT_MAX_PATH] = {}, dest_tmp[EXT_MAX_PATH] = {};
 
                         snprintf(dest_tmp, sizeof(dest_tmp) - 1, "%s/%s", dest_path, dp->d_name);
                         snprintf(src_tmp, sizeof(src_tmp) - 1, "%s/%s", base_path, dp->d_name);
