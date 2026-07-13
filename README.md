@@ -1,5 +1,5 @@
 # cvrt
-
+## Moved to codeberg this is readonly now here https://codeberg.org/rand0m/cvrt
 A tiny conversion tool 
 
 
